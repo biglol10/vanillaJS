@@ -1,0 +1,330 @@
+@charset "utf-8";
+@import "reset.css";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap");
+
+@font-face {
+  font-family: "GmarketSansBold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.sr-only {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
+body {
+  margin: 98px auto 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+  background: #f7f1c0;
+  height: 100%;
+}
+
+button,
+a {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+
+
+/* 인트로 페이지 스타일 */
+/* 인트로 컨테이너 스타일 */
+.intro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 제목 스타일 */
+.intro-container h1 {
+  margin-bottom: 10px;
+  font-size: 55px;
+  font-weight: 700;
+  font-family: "GmarketSansBold";
+}
+
+.intro-container span {
+  color: #9b51e0;
+  font-weight: 500;
+  font-size: 18px;
+  margin-bottom: 36px;
+}
+
+.intro-container strong {
+  margin-bottom: 36px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.intro-container img {
+  width: 270px;
+  height: 267px;
+  display: block;
+  margin-bottom: 36px;
+}
+
+.intro-container button {
+  width: 300px;
+  height: 52px;
+  background: #ffff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  font-size: 16px;
+  color: #9b51e0;
+  font-weight: 900;
+}
+
+
+
+
+/* 문항 선택 페이지 */
+/* form 스타일 */
+#question-form {
+  width: 300px;
+  margin: 0 auto;
+}
+
+/* 문항 스타일 */
+/*
+첫번째 문항은 on이 붙어있습니다.
+문항은 이전, 다음 버튼을 누를 때 클래스 on을 추가하거나 지우면서 스타일을 변경합니다.
+*/
+.question-item {
+  display: none;
+  width: 100%;
+}
+
+.question-item.on {
+  display: block;
+}
+
+/* 상태바 스타일 */
+.status-box {
+  background: #ffff;
+  position: relative;
+}
+
+.status-box span {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  color: #9b51e0;
+  font-size: 18px;
+}
+
+.status-bar {
+  height: 6px;
+  background: #9b51e0;
+}
+
+/* 문제 스타일 */
+.question-box h2 {
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 26px;
+  margin: 40px 0px 30px 0px;
+}
+
+/* 답안 스타일 */
+.question-box .answer-list {
+  margin-bottom: 36px;
+}
+
+.question-box .answer-item {
+  font-size: 16px;
+  line-height: 23px;
+  list-style: none;
+  margin-bottom: 12px;
+  text-indent: -22px;
+  margin: 0 0 12px 22px;
+}
+
+.question-box input, .question-box label {
+  cursor: pointer;
+}
+
+/* 이전, 다음 버튼 스타일 */
+.button-box {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.button-box button {
+  width: 100px;
+  height: 40px;
+  background: #9b51e0;
+  font-weight: 900;
+  font-size: 16px;
+  color: #ffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 버튼이 하나일 경우 가운데 정렬 */
+.button-box.style-center {
+  justify-content: center; 
+}
+
+/* 로딩 스타일 */
+/* 결과가 나오기 전 표시 */
+.loading-container {
+  display: block;
+  position: absolute;
+  top: 326px;
+  left: 50%;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.loading-container img {
+  width: 91px;
+  height: 88px;
+  margin-bottom: 24px; 
+}
+
+.loading-container p {
+  font-size: 14px;
+}
+
+
+
+/* 결과페이지 스타일 */
+/* 결과 컨테이너 스타일 */
+.result-container {
+  display: none;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.result-wrap {
+  margin-bottom: 36px;
+}
+
+/* 결과 문구 */
+.result-title {
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 결과 이름 */
+.result-name {
+  font-weight: 900;
+  font-size: 36px;
+  text-align: center;
+  color: #9b51e0;
+}
+
+/* 결과 이미지 */
+.result-image {
+  width: 228px;
+  height: 241px;
+  margin: 0 auto;
+}
+
+.result-image > img {
+  width: 100%;
+  height: auto;
+}
+
+/* 결과 특징 */
+.result-features {
+  margin-top: 8px;
+}
+
+.result-features h3 {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  padding: 8px 0;
+  border-top: 2px solid #9b51e0;
+  border-bottom: 2px solid #9b51e0;
+  margin-bottom: 22px;
+}
+
+.result-features li {
+  font-size: 16px;
+  line-height: 23px;
+  margin: 0 0 12px 12px;
+  text-indent: -6px;
+}
+
+.result-features li::before {
+  content: "\2022";
+  color: #9b51e0;
+  font-weight: bold;
+  display: inline-block;
+  width: 6px;
+}
+
+.result-container button {
+  width: 100%;
+  height: 52px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 16px;
+  color: #9B51E0;
+}
+
+@media screen and (max-width: 380px) {
+  body {
+    margin-top: 56px;
+  }
+  
+  /* 인트로 페이지 스타일 */
+  .intro-container h1 {
+    font-size: 45px;
+  }
+
+  .intro-container span {
+    font-size: 14px;
+  }
+
+  /* 문항 선택 페이지 */
+  .question-box h2 {
+    font-size: 16px;
+  }
+
+  .question-box .answer-list {
+    margin-bottom: 36px;
+  }
+
+  .question-box .answer-item {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  /* 로딩 스타일 */
+  .loading-container {
+    top: 266px;
+  }
+
+  .loading-container p {
+    font-size: 12px;
+  }
+
+  /* 결과페이지 스타일 */
+  .result-wrap {
+    margin-bottom: 30px;
+  }
+
+  .result-features h3 {
+    margin-bottom: 20px;
+  }
+
+  .result-features li {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
