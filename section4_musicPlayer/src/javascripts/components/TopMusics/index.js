@@ -54,7 +54,7 @@ export default class TopMusics extends EventEmitter {
   requestPlay(target) {
     const controller = target.parentElement;
     const { index: musicIndex } = controller.dataset;
-    const payload = { music: this.musics, musicIndex };
+    const payload = { musics: this.musics, musicIndex };
     this.emit("play", payload);
     this.renderStopAll();
     target.classList.replace("icon-play", "icon-pause");
@@ -82,7 +82,7 @@ export default class TopMusics extends EventEmitter {
   render() {
     const topRoof = `
       <div class="top5-roof">
-        <img src="assets/images/Logo.png>
+        <img src="assets/images/intro-logo.png"/>
       </div>
     `;
     const musicsList = this.musics
