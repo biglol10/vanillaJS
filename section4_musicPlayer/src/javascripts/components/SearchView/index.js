@@ -79,7 +79,7 @@ export default class SearchView extends EventEmitter {
   requestPlay(target) {
     const controller = target.parentElement;
     const { index: musicIndex } = controller.dataset;
-    const payload = { musics: this.musics, musicIndex };
+    const payload = { musics: this.searchedMusics, musicIndex };
     this.emit("play", payload);
     this.renderStopAll();
     target.classList.replace("icon-play", "icon-pause");
@@ -95,7 +95,7 @@ export default class SearchView extends EventEmitter {
   requestAddPlayList(target) {
     const controller = target.parentElement;
     const { index: musicIndex } = controller.dataset;
-    const payload = { musics: this.musics, musicIndex };
+    const payload = { musics: this.searchedMusics, musicIndex };
     this.emit("addPlayList", payload);
   }
 
