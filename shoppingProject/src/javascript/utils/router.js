@@ -4,6 +4,17 @@ class Router {
       console.error("Cannot initialize routes, need routes");
     }
     this.routes = routes;
+
+    for (const key in routes) {
+      const route = routes[key];
+      if (key.indexOf(":") > -1) {
+        // "/detail/:id"인 경우 "/detail/:id": ProductDetail
+        const [_, routeName, ...param] = key.split("/");
+        this.routes["/" + routeName] = route;
+        delete this.routes[key];
+      }
+    }
+    console.log(this.routes);
   }
 
   init(rootElementId) {
@@ -12,8 +23,6 @@ class Router {
       return null;
     }
     this.rootElementId = rootElementId;
-
-    debugger;
 
     // about:black의 window.location.pathname은 blank
     // http://paullab.co.kr/abc의 window.location.pathname은 /abc
@@ -37,13 +46,14 @@ class Router {
   }
 
   routing(pathname) {
-    const [_, routeName, ...param] = pathname.split("/");
+    const [_, routeName, param] = pathname.split("/");
     let page = "";
-
-    debugger;
 
     if (this.routes[pathname]) {
       const component = new this.routes[pathname]();
+      page = component.render();
+    } else if (param) {
+      const component = new this.routes["/" + routeName](param);
       page = component.render();
     }
 
