@@ -1,3 +1,5 @@
+import { ProductCard } from "../components/ProductCard/index.js";
+
 class ProductPage {
   constructor() {
     this.mainElement = document.createElement("main");
@@ -16,32 +18,23 @@ class ProductPage {
   async setProductList() {
     await this.getProductData();
 
-    this.mainElement.classList.add("product");
-    this.mainElement.innerHTML = `
-      <h1 class="1r">상품목록 페이지</h1>
-      <ul class="product-list"></ul>
-    `;
+    const productPageHeader = document.createElement("h1");
+    productPageHeader.setAttribute("class", "ir");
+    productPageHeader.innerText = "상품목록 페이지";
+    this.mainElement.appendChild(productPageHeader);
 
-    const productList = this.mainElement.querySelector(".product-list");
+    const productList = document.createElement("ul");
+    productList.setAttribute("class", "product-list");
+
     this.product.forEach((item) => {
-      const producDetailLink = document.createElement("a");
-      producDetailLink.href = `/detail/${item.id}`;
-      producDetailLink.innerHTML = `
-        <li class="product-item">
-          <div class="product-img">
-            <img src="http://test.api.weniv.co.kr/${item.thumbnailImg}" alt="">
-          </div>
-          
-          <strong class="product-name">${item.productName}</strong>
-          <div class="product-price">
-            <strong class="price m-price">${item.price}<span>원</span></strong>
-          </div>
-          
-        </li>
-      `;
-
-      productList.append(producDetailLink);
+      const productItem = document.createElement("li");
+      productItem.setAttribute("class", "product-item");
+      const productCard = new ProductCard(item);
+      productItem.appendChild(productCard.render());
+      productList.appendChild(productItem);
     });
+
+    this.mainElement.append(productList);
   }
 
   render() {
