@@ -30,9 +30,19 @@ class Router {
     this.routing(window.location.pathname);
 
     window.addEventListener("click", (e) => {
-      if (e.target.tagName.toLowerCase() === "a") {
+      // a의 하위요소들을 클릭하면 a태그의 기본 이벤트(페이지 이동)가 발생
+      // 정확하게 a를 클릭했을 때에만 url로 연결이 되는 문제 해결
+      // 이미지나, title이 a태그 안에 있기 때문
+      // title 옆 빈 공간을 클릭하면 잘 이동함 -> 가장 근접한 상위요소중 a태그를 찾도록 설계
+      // if (e.target.tagName.toLowerCase() === "a") {
+      //   e.preventDefault();
+      //   this.routePush(e.target.href);
+      // }
+
+      // closest() : 상위요소 중 가장 가까운 요소를 찾는다.
+      if (e.target.closest("a")) {
         e.preventDefault();
-        this.routePush(e.target.href);
+        this.routePush(e.target.closest("a").href);
       }
     });
 
