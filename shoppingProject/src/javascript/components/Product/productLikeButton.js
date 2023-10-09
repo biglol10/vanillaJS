@@ -1,6 +1,8 @@
-class ProductLikeButton {
-  constructor(id) {
-    this.productId = id;
+import Component from "../../core/Component.js";
+
+class ProductLikeButton extends Component {
+  constructor(props) {
+    super(props);
     this.liked = this.checkLikeList();
   }
   checkLikeList() {
@@ -8,7 +10,7 @@ class ProductLikeButton {
       localStorage.setItem("likeList", JSON.stringify([]));
     }
     const likeList = JSON.parse(localStorage.getItem("likeList"));
-    return likeList.includes(this.productId);
+    return likeList.includes(this.props.productId);
   }
   addClickEvent(likeButton) {
     likeButton.addEventListener("click", (e) => {
@@ -21,16 +23,15 @@ class ProductLikeButton {
       //     : e.target.classList.remove("on");
       const likeList = JSON.parse(localStorage.getItem("likeList"));
       this.liked = !this.liked;
-      this.liked && likeList.push(this.productId);
+      this.liked && likeList.push(this.props.productId);
       const newLikeList = this.liked
         ? likeList
-        : likeList.filter((id) => id != this.productId);
+        : likeList.filter((id) => id != this.props.productId);
       localStorage.setItem("likeList", JSON.stringify(newLikeList));
 
       this.liked
         ? e.target.classList.add("on")
         : e.target.classList.remove("on");
-      console.log("좋아요 버튼 클릭");
     });
   }
   render() {
