@@ -25,13 +25,13 @@ class ProductCard extends Component {
     //   this.props.item.discountRate
     // );
     const productLikeButton = new ProductLikeButton({
-      productId: this.props.item.id,
+      id: this.props.item.id,
     });
 
     product.appendChild(productImage.render());
     product.appendChild(productName.render());
     product.appendChild(productPrice.render());
-    product.appendChild(productLikeButton.render());
+    product.appendChild(productLikeButton.initialize());
 
     return product;
   }
