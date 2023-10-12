@@ -7,7 +7,6 @@ class ProductPrice extends Component {
 
     const productPrice = document.createElement("strong");
     productPrice.setAttribute("class", "price m-price");
-
     const priceType = document.createElement("span");
     priceType.innerText = "원";
     productPriceContainer.appendChild(productPrice);
@@ -21,7 +20,8 @@ class ProductPrice extends Component {
 
       const originPrice = document.createElement("strong");
       originPrice.setAttribute("class", "price-strikethrough");
-      originPrice.innerText = this.props.price;
+      originPrice.innerText =
+        this.props.price.toLocaleString("ko-Kr") + priceType.innerText;
       originPrice.appendChild(priceType);
 
       const discountRateDisplay = document.createElement("strong");
@@ -32,12 +32,12 @@ class ProductPrice extends Component {
         this.props.price - this.props.price * (0.01 * this.props.discountRate);
 
       discountRateContainer.appendChild(originPrice);
-      discountRateContainer.appendChild(priceType.cloneNode(true)); // 여기에 priceType주고 아래에도 priceType을 주면 나중에 주어진것만 적용되어 cloneNode해줘야함. true로 하면 자식노드까지
+      // discountRateContainer.appendChild(priceType.cloneNode(true)); // 여기에 priceType주고 아래에도 priceType을 주면 나중에 주어진것만 적용되어 cloneNode해줘야함. true로 하면 자식노드까지
       discountRateContainer.appendChild(discountRateDisplay);
       productPriceContainer.appendChild(discountRateContainer);
     }
 
-    productPrice.innerText = this.props.price; // 할인된 금액을 마지막에 적용
+    productPrice.innerText = this.props.price.toLocaleString("ko-Kr"); // 할인된 금액을 마지막에 적용
 
     // console.log(`producePrice is ${productPrice.innerText}`);
 

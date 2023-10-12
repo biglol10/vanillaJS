@@ -1,4 +1,5 @@
 import Component from "../../core/Component.js";
+
 import {
   ProductImage,
   ProductPrice,
@@ -20,10 +21,6 @@ class ProductCard extends Component {
       price: this.props.item.price,
       discountRate: this.props.item.discountRate,
     });
-    // const productPrice = new ProductPrice(
-    //   this.props.item.price,
-    //   this.props.item.discountRate
-    // );
     const productLikeButton = new ProductLikeButton({
       id: this.props.item.id,
     });

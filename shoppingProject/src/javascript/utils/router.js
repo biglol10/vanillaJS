@@ -1,16 +1,17 @@
 class Router {
   constructor(routes) {
     if (!routes) {
-      console.error("Cannot initialize routes, need routes");
+      console.error("Can not initailze routes, need rotues!");
     }
     this.routes = routes;
 
+    // routes 경로 id값들을 파싱하기 위한 함수
     for (const key in routes) {
       const route = routes[key];
       if (key.indexOf(":") > -1) {
-        // "/detail/:id"인 경우 "/detail/:id": ProductDetail
-        const [_, routeName, ...param] = key.split("/");
+        const [_, routeName, param] = key.split("/");
         this.routes["/" + routeName] = route;
+        // /:id는 파싱받기 위한 것 임으로 필요없기 때문에 삭제
         delete this.routes[key];
       }
     }
@@ -19,14 +20,11 @@ class Router {
 
   init(rootElementId) {
     if (!rootElementId) {
-      console.error("Cannot initialize Route, rootElementId not defined");
+      console.error("Can not initailize Route, not define rootElementId");
       return null;
     }
     this.rootElementId = rootElementId;
 
-    // about:black의 window.location.pathname은 blank
-    // http://paullab.co.kr/abc의 window.location.pathname은 /abc
-    // http://www.paullab.co.kr/about.html 의 경우 about.html
     this.routing(window.location.pathname);
 
     window.addEventListener("click", (e) => {
@@ -46,7 +44,6 @@ class Router {
       }
     });
 
-    // 뒤로가기 버튼눌렀을 때
     window.onpopstate = () => this.routing(window.location.pathname);
   }
 
@@ -71,7 +68,6 @@ class Router {
       this.render(page);
     }
   }
-
   render(page) {
     const rootElement = document.querySelector(this.rootElementId);
     rootElement.innerHTML = "";
