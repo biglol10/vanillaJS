@@ -4,12 +4,15 @@ class Router {
       console.error("Can not initailze routes, need rotues!");
     }
     this.routes = routes;
+    // route에서 필요한 key값들을 저장하는 부분
+    this.routeParam = {};
 
     // routes 경로 id값들을 파싱하기 위한 함수
     for (const key in routes) {
       const route = routes[key];
       if (key.indexOf(":") > -1) {
         const [_, routeName, param] = key.split("/");
+        this.routeParam[routeName] = param.replace(":", "");
         this.routes["/" + routeName] = route;
         // /:id는 파싱받기 위한 것 임으로 필요없기 때문에 삭제
         delete this.routes[key];
@@ -58,10 +61,14 @@ class Router {
 
     if (this.routes[pathname]) {
       const component = new this.routes[pathname]();
-      page = component.render();
+      page = component.initialize();
     } else if (param) {
-      const component = new this.routes["/" + routeName](param);
-      page = component.render();
+      // 컴포넌트를 생성할 때는 object형태로 넣어주기로 했음
+      // key랑 value를 각각 저장해야 함
+      const routeParam = {};
+      routeParam[this.routeParam[routeName]] = param;
+      const component = new this.routes["/" + routeName](routeParam); // productDetail
+      page = component.initialize();
     }
 
     if (page) {

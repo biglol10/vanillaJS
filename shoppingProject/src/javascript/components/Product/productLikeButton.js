@@ -30,17 +30,6 @@ class ProductLikeButton extends Component {
     // this.state.liked = this.checkLikeList();
   }
 
-  // state가 바뀌면 리렌더링이 일어나야함
-  setState(newState) {
-    this.state = newState;
-    this.updater();
-  }
-  updater() {
-    const rendered = this.render();
-    this.lastRendered.replaceWith(rendered);
-    this.lastRendered = rendered;
-  }
-
   // 클릭을 하면 좋아요 목록에 추한ㅏ
   // 좋아요 목록에 추되ㅆ다면 "on"zmffotmfmf qjxmsdp cnrkgksek
   // 좋아요 목록은 로컬스토리지를 호라용하여 클라에서 저장하도록 한다
@@ -89,13 +78,7 @@ class ProductLikeButton extends Component {
 
     return likeButton;
   }
-
-  initialize() {
-    const rendered = this.render();
-    this.lastRendered = rendered;
-
-    return rendered;
-  }
+  // 최초 초화 -> 내부적으로 render가 실행됨 -> 마지막 랜더링 결과 -> state가 바뀌면 새로운 state에 맞춰서 새로 render
 }
 
 export default ProductLikeButton;
