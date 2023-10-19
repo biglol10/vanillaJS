@@ -1,4 +1,4 @@
-import Component from "../core/Component.js";
+import { Component, createComponent } from "../core/index.js";
 import {
   ProductBasicInfo,
   ProductDetailInfo,
@@ -38,19 +38,22 @@ class ProductDetail extends Component {
 
     if (this.state.isLoaded) {
       // 기본정보
-      const productBasicInfo = new ProductBasicInfo({
+      // const productBasicInfo = new ProductBasicInfo({
+      //   product: this.state.product,
+      // });
+      const productBasicInfo = createComponent(ProductBasicInfo, {
         product: this.state.product,
       });
 
       // 상세정보
-      const productDetailInfo = new ProductDetailInfo({
+      // const productDetailInfo = new ProductDetailInfo({
+      //   product: this.state.product,
+      // });
+      const productDetailInfo = createComponent(ProductDetailInfo, {
         product: this.state.product,
       });
 
-      contentWrap.append(
-        productBasicInfo.initialize(),
-        productDetailInfo.initialize()
-      );
+      contentWrap.append(productBasicInfo, productDetailInfo);
     }
 
     // 닫기버튼
