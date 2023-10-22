@@ -1,13 +1,17 @@
-import Component from "../../core/Component.js";
+import { Component, createComponent } from "../../core/index.js";
+import { SectionHeading } from "./index.js";
 
 class ProductDetailInfo extends Component {
   render() {
     const productDetailInfo = document.createElement("section");
     productDetailInfo.setAttribute("class", "product-detail-info");
 
-    const sectionHeading = document.createElement("h2");
-    sectionHeading.setAttribute("class", "ir");
-    sectionHeading.innerText = "상품 상세 정보";
+    // const sectionHeading = document.createElement("h2");
+    // sectionHeading.setAttribute("class", "ir");
+    // sectionHeading.innerText = "상품 상세 정보";
+    const sectionHeading = createComponent(SectionHeading, {
+      text: "상품 상세 정보",
+    });
 
     const productDatalist = document.createElement("dl");
     productDatalist.setAttribute("class", "product-data");
@@ -46,7 +50,7 @@ class ProductDetailInfo extends Component {
       productContent.append(imgItem);
     });
 
-    productDetailInfo.append(productDatalist, productContent);
+    productDetailInfo.append(sectionHeading, productDatalist, productContent);
     return productDetailInfo;
   }
 }
