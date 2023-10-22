@@ -31,6 +31,10 @@ class OptionSelector extends Component {
       const additionalFeeText =
         option.additionalFee > 0 ? `+(${option.additionalFee})원` : ``;
       optionItem.innerText = `${option.optionName} ${additionalFeeText}`;
+      optionItem.addEventListener("click", () => {
+        this.onClickSelectButton();
+        this.props.addSelectedProductOption(option.id);
+      });
       optionList.append(optionItem);
     });
 

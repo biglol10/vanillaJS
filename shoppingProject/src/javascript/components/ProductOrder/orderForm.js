@@ -1,13 +1,37 @@
 import { Component, createComponent } from "../../core/index.js";
-import { QuantityInput, OptionSelector } from "./index.js";
+import { QuantityInput, OptionSelector, SelectedOption } from "./index.js";
 
 class OrderForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       quantity: 1,
+      selectedProductOptions: [],
     };
   }
+  addSelectedProductOption(optionId) {
+    const isExist =
+      this.state.selectedProductOptions.filter(
+        (selectedProduct) => selectedProduct.optionId === optionId
+      ).length > 0;
+
+    if (isExist) return;
+
+    const newSelectedProductOption = {
+      optionId,
+      quantity: 1,
+    };
+    const newSelectedProductOptions = [
+      ...this.state.selectedProductOptions,
+      newSelectedProductOption,
+    ];
+    this.setState({
+      ...this.state,
+      selectedProductOptions: newSelectedProductOptions,
+    });
+  }
+  // 중복된 코드를 제거필요
+  // 추가와 감소등의 로직을 수량조절 컴포넌트로 이동
   increaseQuantity() {
     // console.log(this); // <button type="button" class="quantity-plus"><span class="ir">수량 추가</span></button>
     // this가 button인 이유는 이 메소드가 실행되는 곳이 이 클래스 내에서 NewQuantityInput으로 만들어낸 그 객체에서 나오는 게 아니라 버튼이라는 요소가 실행시키는 주체가 되어서
@@ -15,22 +39,23 @@ class OrderForm extends Component {
     // 그래서 this.increaseQuantity.bind(this) [render가 실행되는 시점에서의 this]
     const newQuantity = this.state.quantity + 1;
     if (newQuantity > this.props.product.stockCount) return;
-    this.setState({ quantity: newQuantity });
+    this.setState({ ...this.state, quantity: newQuantity });
   }
   decreaseQuantity() {
     const newQuantity = this.state.quantity - 1;
     if (newQuantity < 1) return;
-    this.setState({ quantity: newQuantity });
+    this.setState({ ...this.state, quantity: newQuantity });
   }
   onChangeQuantityInput(e) {
     const maxQuantity = this.props.product.stockCount;
     const newQuantity = Number(e.target.value);
     if (newQuantity > maxQuantity)
-      this.setState({ quantity: this.props.product.stockCount });
-    else if (newQuantity < 1) this.setState({ quantity: 1 });
-    else this.setState({ quantity: newQuantity });
+      this.setState({ ...this.state, quantity: this.props.product.stockCount });
+    else if (newQuantity < 1) this.setState({ ...this.state, quantity: 1 });
+    else this.setState({ ...this.state, quantity: newQuantity });
   }
   render() {
+    console.log(this.state.selectedProductOptions);
     const orderForm = document.createElement("form");
     orderForm.setAttribute("class", "product-order-form");
 
@@ -53,9 +78,40 @@ class OrderForm extends Component {
       // 옵션이 있을 때
       const optionSelector = createComponent(OptionSelector, {
         option: this.props.product.option,
+        addSelectedProductOption: this.addSelectedProductOption.bind(this),
       });
 
-      selectedProductContainer.append(optionSelector);
+      const selectedProductOptionList = document.createElement("ul");
+      this.state.selectedProductOptions.forEach((selectedProductOption) => {
+        const selectedOption = this.props.product.option.find(
+          (option) => option.id === selectedProductOption.optionId
+        );
+        const optionName = selectedOption.optionName;
+        const productPrice =
+          this.props.product.price *
+          (1 - this.props.product.discountRate * 0.01);
+        const optionPrice = productPrice + selectedOption.additionalFee;
+
+        const quantityInput = createComponent(QuantityInput, {
+          ...this.props,
+          quantity: this.state.quantity,
+          increaseQuantity: this.increaseQuantity.bind(this),
+          decreaseQuantity: this.decreaseQuantity.bind(this),
+          onChangeQuantityInput: this.onChangeQuantityInput.bind(this),
+        });
+
+        const selectedProductOptionItem = createComponent(SelectedOption, {
+          optionName,
+          optionPrice,
+          quantityInput,
+        }); // 옵션아이템에 해당되는 컴포넌트
+        selectedProductOptionList.append(selectedProductOptionItem);
+      });
+
+      selectedProductContainer.append(
+        optionSelector,
+        selectedProductOptionList
+      );
     } else {
       // 옵션이 없을 때
       const quantityInput = createComponent(QuantityInput, {
