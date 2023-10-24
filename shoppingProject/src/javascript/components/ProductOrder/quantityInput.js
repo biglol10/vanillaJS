@@ -5,6 +5,23 @@ class QuantityInput extends Component {
     super(props);
   }
 
+  increaseQuantity() {
+    // console.log(this); // <button type="button" class="quantity-plus"><span class="ir">수량 추가</span></button>
+    // this가 button인 이유는 이 메소드가 실행되는 곳이 이 클래스 내에서 NewQuantityInput으로 만들어낸 그 객체에서 나오는 게 아니라 버튼이라는 요소가 실행시키는 주체가 되어서
+    // increaseQuantity라는 메소드를 실행하는 시점에 this는 quantityIncreaseButton 요소가 됨
+    // 그래서 this.increaseQuantity.bind(this) [render가 실행되는 시점에서의 this]
+    const newQuantity = this.props.quantity + 1;
+    this.props.setQuantity(newQuantity);
+  }
+  decreaseQuantity() {
+    const newQuantity = this.props.quantity - 1;
+    this.props.setQuantity(newQuantity);
+  }
+  onChangeQuantityInput(e) {
+    const newQuantity = Number(e.target.value);
+    this.props.setQuantity(newQuantity);
+  }
+
   render() {
     console.log(this.props);
     const quantityOption = document.createElement("div");
@@ -15,7 +32,7 @@ class QuantityInput extends Component {
     quantityIncreaseButton.setAttribute("class", "quantity-plus");
     quantityIncreaseButton.addEventListener(
       "click",
-      this.props.increaseQuantity
+      this.increaseQuantity.bind(this)
     );
 
     const increaseButtonIr = document.createElement("span");
@@ -29,7 +46,10 @@ class QuantityInput extends Component {
     quantityInput.setAttribute("class", "quantity-input");
     quantityInput.setAttribute("id", `quantityInput${this.props.product.id}`);
     quantityInput.value = this.props.quantity;
-    quantityInput.addEventListener("change", this.props.onChangeQuantityInput);
+    quantityInput.addEventListener(
+      "change",
+      this.onChangeQuantityInput.bind(this)
+    );
 
     const quantityLabel = document.createElement("label");
     quantityLabel.setAttribute("class", "ir");
@@ -45,7 +65,7 @@ class QuantityInput extends Component {
     quantityDecreaseButton.setAttribute("class", "quantity-minus");
     quantityDecreaseButton.addEventListener(
       "click",
-      this.props.decreaseQuantity
+      this.decreaseQuantity.bind(this)
     );
 
     quantityDecreaseButton.append(decreaseButtonIr);
