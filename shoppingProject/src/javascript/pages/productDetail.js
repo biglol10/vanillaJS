@@ -1,8 +1,6 @@
 import { Component, createComponent } from "../core/index.js";
-import {
-  ProductBasicInfo,
-  ProductDetailInfo,
-} from "../components/ProductDetail/index.js";
+import { ProductBasicInfo, ProductDetailInfo } from "../components/ProductDetail/index.js";
+import { CloseButton } from "../components/Button/index.js";
 
 class ProductDetail extends Component {
   constructor(props) {
@@ -17,9 +15,7 @@ class ProductDetail extends Component {
 
   // 상세 상품 정보 가져오기
   async getProductData() {
-    const response = await fetch(
-      `http://test.api.weniv.co.kr/mall/${this.props.id}`
-    );
+    const response = await fetch(`http://test.api.weniv.co.kr/mall/${this.props.id}`);
     const data = await response.json();
 
     this.setState({ product: data, isLoaded: true });
@@ -57,6 +53,11 @@ class ProductDetail extends Component {
     }
 
     // 닫기버튼
+    const closeButton = createComponent(CloseButton);
+    closeButton.addEventListener("click", () => {
+      window.history.back();
+    });
+    contentWrap.append(closeButton);
 
     container.append(contentWrap);
 
