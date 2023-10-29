@@ -92,6 +92,66 @@ class OrderForm extends Component {
     return totalPrice + totalAdditionalFee;
   }
 
+  getProductFormCart() {
+    const cartItem = JSON.parse(localStorage.getItem("cart"));
+    const productId = this.props.product.id;
+
+    if (!cartItem || !cartItem[productId]) {
+      const defaultProduct = {
+        id: productId,
+        detail: this.props.product,
+        option: [],
+        totalPrice: 0,
+        quantity: 0,
+      };
+      return defaultProduct;
+    }
+
+    return cartItem[productId];
+  }
+
+  addProductToCart() {
+    if (this.state.quantity < 1) return;
+    const addedProduct = this.getProductFormCart();
+    this.state.selectedProductOptions.forEach((option) => {
+      const targetIndex = addedProduct.option.findIndex((addedOption) => addedOption.optionId === option.optionId);
+      if (targetIndex === -1) {
+        addedProduct.option.push(option);
+      } else {
+        addedProduct.option[targetIndex].quantity += option.quantity;
+      }
+    });
+    addedProduct.quantity += this.state.quantity;
+    addedProduct.totalPrice += this.getTotalPrice();
+    const cartItem = JSON.parse(localStorage.getItem("cart"));
+    localStorage.setItem("cart", JSON.stringify({ ...cartItem, [addedProduct.id]: addedProduct }));
+    console.log(addedProduct);
+  }
+
+  orderProduct() {
+    const productId = this.props.product.id;
+
+    const addedProduct = {
+      id: productId,
+      detail: this.props.product,
+      option: [],
+      totalPrice: 0,
+      quantity: 0,
+    };
+
+    this.state.selectedProductOptions.forEach((option) => {
+      const targetIndex = addedProduct.option.findIndex((addedOption) => addedOption.optionId === option.optionId);
+      if (targetIndex === -1) {
+        addedProduct.option.push(option);
+      } else {
+        addedProduct.option[targetIndex].quantity += option.quantity;
+      }
+    });
+    addedProduct.quantity += this.state.quantity;
+    addedProduct.totalPrice += this.getTotalPrice();
+    localStorage.setItem("cart", JSON.stringify({ [addedProduct.id]: addedProduct }));
+  }
+
   toggleCartModal() {
     this.setState({ ...this.state, cartModal: !this.state.cartModal });
   }
@@ -196,7 +256,19 @@ class OrderForm extends Component {
     const productLikeButton = createComponent(ProductLikeButton, { id: this.props.product.id });
     buttonContainer.append(orderButton, cartButton, productLikeButton);
 
-    cartButton.addEventListener("click", this.toggleCartModal.bind(this));
+    if (this.props.product.stockCount > 0 && this.state.quantity > 0) {
+      cartButton.addEventListener("click", this.toggleCartModal.bind(this));
+      orderButton.addEventListener("click", () => {
+        this.orderProduct();
+        // 라우팅
+        // const link = document.createElement("a");
+        // document.body.append(link);
+        // link.href = "/cart";
+        // link.click();
+        window.routing("/cart");
+      });
+      if (!this.state.cartModal) cartButton.addEventListener("click", this.addProductToCart.bind(this));
+    }
 
     if (this.state.cartModal) {
       const modalMessage = document.createElement("p");

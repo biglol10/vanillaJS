@@ -1,5 +1,7 @@
 import { ProductCard } from "../components/ProductCard/index.js";
 import Component from "../core/Component.js";
+import createComponent from "../core/createComponent.js";
+import { LinkToCart } from "../components/Button/index.js";
 
 class ProductPage extends Component {
   constructor() {
@@ -50,7 +52,9 @@ class ProductPage extends Component {
       productList.appendChild(productItem);
     });
 
-    this.mainElement.append(productList);
+    const linkToCart = createComponent(LinkToCart, {});
+
+    this.mainElement.append(productList, linkToCart);
 
     return this.mainElement;
   }

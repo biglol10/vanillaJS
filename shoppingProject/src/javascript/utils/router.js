@@ -47,6 +47,7 @@ class Router {
       }
     });
 
+    window.routing = (path) => this.routePush(path);
     window.onpopstate = () => this.routing(window.location.pathname);
   }
 
